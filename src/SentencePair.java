@@ -9,6 +9,14 @@ public class SentencePair {
 		this.f = f;
 	}
 	
+	public Sentence getE() {
+		return this.e;
+	}
+	
+	public Sentence getF() {
+		return this.f;
+	}
+	
 	//TODO
 	@Override
 	public String toString() {

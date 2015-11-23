@@ -32,6 +32,10 @@ public class Sentence {
 		
 	}
 	
+	public List<String> getWords() {
+		return this.words;
+	}
+	
 	@Override
 	public String toString() {
 		
