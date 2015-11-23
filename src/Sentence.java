@@ -1,4 +1,3 @@
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,17 +38,13 @@ public class Sentence {
 	@Override
 	public String toString() {
 		
-		Iterator<String> iter = this.words.listIterator();
-		
 		StringBuilder output = new StringBuilder("");
-
-		while (iter.hasNext()) {		
-			output.append(iter.next() + ", ");
-		}
 		
-		if ( output.length() > 5) {
+		for (String str : this.words)
+			output.append(str + ", ");
+		
+		if ( output.length() > 5)
 			output.replace(output.length() - 2, output.length(), "");
-		}
 		
 		return output.toString();
 	}
