@@ -49,6 +49,10 @@ public class Sentence {
 		return output.toString();
 	}
 	
+	public int getLength() {
+		return this.words.size();
+	}
+	
 	public void print() {
 		
 		System.out.println("[" + this + "]");
