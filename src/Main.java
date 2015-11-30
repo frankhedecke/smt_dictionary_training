@@ -73,5 +73,26 @@ public class Main {
 			// TODO check for conversion of t
 			tConverged = true;
 		}
+		
+		// print overview
+		System.out.println();
+		System.out.print("     ");
+		for (String str : d.getWordSet1()) {
+			System.out.print("      " + str);
+		}
+		System.out.println();
+		
+		int i = 0;
+		for (String str : d.getWordSet2()) {
+			System.out.print(str + "  ");
+			for (int j = 0; j < v_MAX; j++) {
+				System.out.print(t[i][j] + " ");
+			}
+			i++;
+			System.out.println();
+		}
+		
+		
+		
 	}
 }
