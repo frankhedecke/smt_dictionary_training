@@ -30,15 +30,11 @@ public class Main {
 		System.out.println("vF = " + d.getWordSet2());
 		
 		// algorithm setup
-		int u_MAX = d.getWordSet1().size();
-		int v_MAX = d.getWordSet2().size();
-		// rework
-		Float[][] counts_old = new Float[u_MAX][v_MAX];
-		Float[][] t_old = new Float[u_MAX][v_MAX];
 		Map<String, Map<String, Float>> counts = new HashMap<String, Map<String, Float>>();
 		Map<String, Map<String, Float>> t = new HashMap<String, Map<String, Float>>();
 		
-		boolean tConverged = false;
+		// TODO
+		boolean tConverged = false; 
 		for (String u : d.getWordSet1()) {
 			t.put(u, new HashMap<String, Float>());
 			counts.put(u, new HashMap<String, Float>());
@@ -66,8 +62,8 @@ public class Main {
 						s += t.get(i).get(j);
 					}
 					for (String j : temp.getWordSet2()) {
-						float count_temp = counts.get(i).get(j);
-						counts.get(i).put(j, count_temp / s);
+						float count_temp = counts.get(i).get(j) + t.get(i).get(j) / s;
+						counts.get(i).put(j, count_temp);
 					}
 				}
 			}
@@ -78,7 +74,8 @@ public class Main {
 					for (String ub : d.getWordSet1())
 						sumUV += counts.get(ub).get(v);
 					float value = counts.get(u).get(v) / sumUV;
-					counts.get(u).put(v, value);
+					// t.get(u).remove(v);
+					t.get(u).put(v, value);
 				}
 			}
 			
@@ -90,17 +87,23 @@ public class Main {
 		System.out.println();
 		System.out.print("     ");
 		for (String str : d.getWordSet1()) {
-			System.out.print("      " + str);
+			System.out.print("       " + str);
 		}
 		System.out.println();
 		
-		int i = 0;
 		for (String str : d.getWordSet2()) {
-			System.out.print(str + "      ");
+			System.out.print(str);
+			for (int i = str.length(); i < 11; i++)
+				System.out.print(" ");
 			for (String j : d.getWordSet1()) {
-				System.out.print(t.get(j).get(str) + "       ");
+				String value = t.get(j).get(str).toString();
+				if (value.length() > 4)
+					value = value.substring(0, 4);
+				else
+					value = value + " ";
+				
+				System.out.print(value + "       ");
 			}
-			i++;
 			System.out.println();
 		}
 	}
