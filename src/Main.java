@@ -1,3 +1,4 @@
+import java.util.*;
 
 public class Main {
 
@@ -31,42 +32,53 @@ public class Main {
 		// algorithm setup
 		int u_MAX = d.getWordSet1().size();
 		int v_MAX = d.getWordSet2().size();
-		Float[][] counts = new Float[u_MAX][v_MAX];
-		Float[][] t = new Float[u_MAX][v_MAX];
+		// rework
+		Float[][] counts_old = new Float[u_MAX][v_MAX];
+		Float[][] t_old = new Float[u_MAX][v_MAX];
+		Map<String, Map<String, Float>> counts = new HashMap<String, Map<String, Float>>();
+		Map<String, Map<String, Float>> t = new HashMap<String, Map<String, Float>>();
+		
 		boolean tConverged = false;
-		for (int u = 0; u < u_MAX; u++) {
-			for (int v = 0; v < v_MAX; v++) {
-				t[u][v] = 0.5f;	// TODO check init
+		for (String u : d.getWordSet1()) {
+			t.put(u, new HashMap<String, Float>());
+			counts.put(u, new HashMap<String, Float>());
+			for (String v : d.getWordSet2()) {
+				t.get(u).put(v, 0.5f);
+				counts.get(u).put(v, 0f);
 			}
 		}
 		
 		// algorithm
-		for (int times = 0; times < 3; times ++) { // TODO
-			for (int u = 0; u < u_MAX; u++) {
-				for (int v = 0; v < v_MAX; v++) {
-					counts[u][v] = 0f;
+		for (int times = 0; times < 3; times ++) {
+			for (String u : d.getWordSet1()) {
+				for (String v : d.getWordSet2()) {
+					counts.get(u).put(v, 0f);
 				}
 			}
 			
 			for (SentencePair ef : d) {
-				for (int i = 0; i < ef.getE().getLength(); i++) {
+				BilingualCorpus temp = new BilingualCorpus();
+				temp.add(ef);
+				
+				for (String i : temp.getWordSet1()) {
 					float s = 0;
-					for (int j = 0; j < ef.getF().getLength(); j++) {
-						s += t[i][j];
+					for (String j : temp.getWordSet2()) { 
+						s += t.get(i).get(j);
 					}
-					for (int j = 0; j < ef.getF().getLength(); j++) {
-						counts[i][j] += t[i][j] / s;
+					for (String j : temp.getWordSet2()) {
+						float count_temp = counts.get(i).get(j);
+						counts.get(i).put(j, count_temp / s);
 					}
 				}
 			}
 
-			for (int u = 0; u < u_MAX; u++) {
-				for (int v = 0; v < v_MAX; v++) {
+			for (String u : d.getWordSet1()) {
+				for (String v : d.getWordSet2()) {
 					float sumUV = 0f;
-					for (int ub = 0; ub < u_MAX; ub++)
-						sumUV += counts[ub][v];
-					
-					t[u][v] = counts[u][v] / sumUV;
+					for (String ub : d.getWordSet1())
+						sumUV += counts.get(ub).get(v);
+					float value = counts.get(u).get(v) / sumUV;
+					counts.get(u).put(v, value);
 				}
 			}
 			
@@ -84,15 +96,12 @@ public class Main {
 		
 		int i = 0;
 		for (String str : d.getWordSet2()) {
-			System.out.print(str + "  ");
-			for (int j = 0; j < v_MAX; j++) {
-				System.out.print(t[i][j] + " ");
+			System.out.print(str + "      ");
+			for (String j : d.getWordSet1()) {
+				System.out.print(t.get(j).get(str) + "       ");
 			}
 			i++;
 			System.out.println();
 		}
-		
-		
-		
 	}
 }
