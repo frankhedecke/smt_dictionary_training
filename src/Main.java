@@ -21,11 +21,11 @@ public class Main {
 		d.add(p2);
 		d.add(p3);
 		
-		System.out.println(d);
-
+		System.out.println("Corpus:");
 		System.out.println(p1);
 		System.out.println(p2);
-		
+		System.out.println(p3);
+		System.out.println();
 		System.out.println("vE = " + d.getWordSet1());
 		System.out.println("vF = " + d.getWordSet2());
 		
@@ -33,8 +33,8 @@ public class Main {
 		Map<String, Map<String, Float>> counts = new HashMap<String, Map<String, Float>>();
 		Map<String, Map<String, Float>> t = new HashMap<String, Map<String, Float>>();
 		
-		// TODO
-		boolean tConverged = false; 
+		// TODO for conversion
+		// boolean tConverged = false; 
 		for (String u : d.getWordSet1()) {
 			t.put(u, new HashMap<String, Float>());
 			counts.put(u, new HashMap<String, Float>());
@@ -74,13 +74,12 @@ public class Main {
 					for (String ub : d.getWordSet1())
 						sumUV += counts.get(ub).get(v);
 					float value = counts.get(u).get(v) / sumUV;
-					// t.get(u).remove(v);
 					t.get(u).put(v, value);
 				}
 			}
 			
 			// TODO check for conversion of t
-			tConverged = true;
+			// tConverged = true;
 		}
 		
 		// print overview
